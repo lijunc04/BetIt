@@ -1,7 +1,17 @@
-.main {
+.landing {
     background: linear-gradient(135deg, #e5d4ff, #d0e4ff);
+    .landing-main {
+        background: linear-gradient(135deg, #e5d4ff, #d0e4ff);
+        display: flex;
+        justify-content: center;
+        height: 100vh;
 
-    display: flex;
-    height: 100vh;
+        .landing-container {
+            display: flex;
+            //justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
 
+    }
 }

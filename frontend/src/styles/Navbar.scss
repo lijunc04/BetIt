@@ -1,0 +1,38 @@
+/* App.css or Navbar.css */
+.navbar {
+    width: 50%;
+    margin: 0 auto;
+    background-color: rgba(0, 0, 0, 0.5); /* Black with 50% transparency */
+    z-index: 1000; /* Makes sure it's on top of other elements */
+    border-radius: 100px;
+    margin-top: 1rem;
+  }
+  
+  .navbar-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .navbar h2 {
+    color: #fff;  /* White color for text */
+  }
+  
+  .navbar ul {
+    display: flex;
+    list-style: none;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .navbar ul li {
+    margin: 0 15px;
+    color: #fff;
+    cursor: pointer;
+    justify-content: center;
+  }
+  
+  .navbar ul li:hover {
+    color: #ff6347; 
+  }
+  

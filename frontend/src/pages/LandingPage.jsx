@@ -1,8 +1,29 @@
 import React from 'react'
 import "../styles/LandingPage.scss"
+import { signInWithGoogle } from '../config/auth';
+import Navbar from './Navbar';
+
 const LandingPage = () => {
-  return (
-    <div className='main'>LandingPage</div>
+    const handleGoogleSignIn = async () => {
+        try {
+          const user = await signInWithGoogle();
+          console.log("User signed in", user);
+        } catch (error) {
+          console.error("sign in failed", error);
+        }
+      };
+
+    return (
+        <div className='landing'><Navbar/>
+    <div className='landing-main'>
+        
+        <div className='landing-container'>
+            <h2 className='landing-title'>BetIt</h2>
+            <p className='landing-subtitle'>Put your money where your mouth is</p>
+            <button className='google-signin-btn' onClick={handleGoogleSignIn}>Get Started</button>
+        </div>
+    </div>
+    </div>
   )
 }
 
