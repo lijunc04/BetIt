@@ -11,10 +11,20 @@ def getAllInfo(uid):
         doc_ref.set({
             'uid': uid,
             'balance': 0,
-            'bets': {},
+            'bets': [],
             'score': 0
-        })
-    return doc.to_dict()
+        })    
+    else:
+        data = doc.to_dict()
+        # Parse bets as JSON
+        bets_refs = data.get('bets', [])
+        bets_data = []
+        for bet_ref in bets_refs:
+            bet_doc = bet_ref.get()
+            if bet_doc.exists:
+                bets_data.append(bet_doc.to_dict())
+        data['bets'] = bets_data
+    return data
 
 @dashboardResponse.route("/dashboard", methods=['GET'])
 @check_firebase_auth

@@ -3,7 +3,7 @@ from gptCalls.getImageVerification import gptresponse
 from dashboard import dashboardResponse
 from check_firebase_auth import check_firebase_auth
 from bets import betResponse
-from flask_cors import CORS, cross_origin
+from flask_cors import CORS
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -18,7 +18,5 @@ def landing():
     return '<p>helloworld</p>'
 
 
-
 if __name__ == '__main__':
     app.run(debug=True)
-    

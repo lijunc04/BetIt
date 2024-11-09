@@ -38,10 +38,12 @@ const Dashboard = () => {
 
   
   useEffect(()=>{
-    setScore(data.score? 0 : data.score)
-    setBalance(data.balance)
-    setBets(Array.isArray(data.bets) ? data.bets : [])
-    setLoading(false)
+    if (data && typeof data.score !== 'undefined') {
+      setScore(data.score);
+      setBalance(data.balance);
+      setBets(Array.isArray(data.bets) ? data.bets : []);
+    }
+    setLoading(false);
   },[data])
 
 
@@ -86,7 +88,7 @@ const Dashboard = () => {
               },
               body:JSON.stringify({
                 'bet': newBet,
-                'createdAt': currentTime,
+                'createdAt': currentTime
               })
             }).then(res=>console.log(res.json()))
           )

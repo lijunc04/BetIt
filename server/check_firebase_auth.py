@@ -13,7 +13,6 @@ firebase_admin.initialize_app(cred)
 def check_firebase_auth(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        print(request.headers)
         auth_header = request.headers.get('Authorization')
         if not auth_header:
             return jsonify({'error': 'No authorization token provided'}), 401
