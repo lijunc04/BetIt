@@ -10,15 +10,6 @@ app.register_blueprint(dashboardResponse)
 def landing():
     return '<p>helloworld</p>'
 
-@app.route("/dashboard", method=['GET'])
-@check_firebase_auth
-def dashboard():
-    user = request.user
-    return jsonify({
-        'message': f'Hello {user["email"]}! This is your dashboard',
-        'uid': user['uid'],
-        
-    })
 
 
 if __name__ == '__main__':
