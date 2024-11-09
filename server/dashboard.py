@@ -14,7 +14,7 @@ def getAllInfo(uid):
             'bets': {},
             'score': 0
         })
-    return jsonify(doc.to_dict())
+    return doc.to_dict()
 
 @dashboardResponse.route("/dashboard", methods=['GET'])
 @check_firebase_auth

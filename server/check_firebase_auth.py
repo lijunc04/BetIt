@@ -13,16 +13,14 @@ firebase_admin.initialize_app(cred)
 def check_firebase_auth(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
+        print(request.headers)
         auth_header = request.headers.get('Authorization')
         if not auth_header:
-            #return jsonify({'error': 'No authorization token provided'}), 401
-            return redirect('/')
+            return jsonify({'error': 'No authorization token provided'}), 401
         try:
             token = auth_header.split('Bearer ')[1]
         except IndexError:
-            #return jsonify({'error': 'Invalid token format'}), 401
-            return redirect('/')
-
+            return jsonify({'error': 'Invalid token format'}), 401
         try:
             decoded_token = auth.verify_id_token(token)
             
@@ -34,8 +32,8 @@ def check_firebase_auth(f):
             
             return f(*args, **kwargs)
             
-        except:
-            #return jsonify({'error': 'Invalid token'}), 401
-            return redirect('/')
+        except Exception as e:
+            print(f"Error verifying token: {e}")
+            return jsonify({'error': 'Invalid token'}), 401
             
     return decorated_function
