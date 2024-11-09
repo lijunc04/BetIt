@@ -16,12 +16,11 @@ def getAllInfo(uid):
         })
     return jsonify(doc.to_dict())
 
-@dashboardResponse.route("/dashboard", method=['GET'])
+@dashboardResponse.route("/dashboard", methods=['GET'])
 @check_firebase_auth
 def dashboard():
     user = request.user
     user_info = getAllInfo(user['uid'])
-    print(user_info)
     return jsonify({
         'uid': user['uid'],
         'info': user_info,
