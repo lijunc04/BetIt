@@ -2,15 +2,20 @@ import React from 'react'
 import "../styles/LandingPage.scss"
 import { signInWithGoogle } from '../config/auth';
 import Navbar from './Navbar';
+import { useNavigate } from 'react-router-dom';
 
 const LandingPage = () => {
+  const navigate = useNavigate();
     const handleGoogleSignIn = async () => {
         try {
           const user = await signInWithGoogle();
+          
           console.log("User signed in", user);
+          navigate('/dashboard');
         } catch (error) {
           console.error("sign in failed", error);
         }
+
       };
 
     return (

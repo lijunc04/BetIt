@@ -1,0 +1,110 @@
+.dashboard {
+    display: flex;
+    min-height: 100vh;
+    background-color: #f7f7f7;
+    font-family: Arial, sans-serif;
+  }
+  
+  .dashboard-container {
+    display: flex;
+    width: 100%;
+  }
+  
+  .sidebar {
+    width: 250px;
+    background-color: #2c3e50;
+    padding: 20px;
+    color: white;
+    text-align: center;
+  
+    .profile {
+      margin-bottom: 40px;
+    }
+  
+    .profile-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      margin-bottom: 10px;
+    }
+  
+    h3 {
+      margin-top: 10px;
+      font-size: 18px;
+    }
+  }
+  
+  .bets {
+    flex: 1;
+    padding: 20px;
+    
+    h2 {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+  
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+  
+    li {
+      background-color: #fff;
+      padding: 15px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  
+      .bet-item {
+        display: flex;
+        justify-content: space-between;
+  
+        p {
+          font-size: 18px;
+        }
+  
+        span {
+          background-color: #3498db;
+          color: white;
+          padding: 5px 10px;
+          border-radius: 3px;
+        }
+      }
+    }
+  }
+  
+  .create-bet {
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  
+    h2 {
+      font-size: 22px;
+      margin-bottom: 10px;
+    }
+  
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+  
+    button {
+      background-color: #3498db;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+  
+      &:hover {
+        background-color: #2980b9;
+      }
+    }
+  }
+  
