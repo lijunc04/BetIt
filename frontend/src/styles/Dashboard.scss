@@ -1,16 +1,16 @@
 .dashboard {
   display: flex;
   min-height: 100vh;
-  height: 100vh;
   background-color: #f7f7f7;
   font-family: Arial, sans-serif;
   position: relative;
-  overflow-x: hidden;  // Prevent horizontal scrollbar during animation
+  overflow-y: hidden;  // Prevent horizontal scrollbar during animation
+  overflow-x: hidden;
 
   &-container {
     display: flex;
     width: 100%;
-    position: relative;  // For proper positioning of create-bet panel
+    position: relative;  
   }
 
   .sidebar {
@@ -21,54 +21,139 @@
     text-align: center;
     flex-shrink: 0;
     overflow: hidden;
+    position: relative;
+    height: 100vh; 
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+
     
     .profile {
-      margin-bottom: 40px;
+      margin-top: 30px;
+      margin-bottom: 30px;
+      display: flex;
+      align-items: center;
+      user-select: none;
+      overflow-y: hidden;
 
+      .user-info{
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 20px;
+
+      }
       &-icon {
         width: 50px;
         height: 50px;
+        margin-left: 30px;
         border-radius: 50%;
-        margin-bottom: 10px;
+        margin-right: 15px; 
       }
 
       h3 {
-        margin-top: 10px;
-        font-size: 18px;
+        font-size: 24px;
+        margin-bottom: 0;
+      }
+
+      p{
+        margin: 1px 0; 
+        text-align: left;
+      }
+    }
+    .log-out-button{
+      top: 30px;
+      left: 30px;
+      position: fixed; 
+      &:hover{
+        cursor: grab;
       }
     }
   }
 
   .bets {
+    overflow: auto;
     flex: 1;
     padding: 20px;
-    overflow: auto;
-    height: 100%;
+    height: 100vh;
+    background-color: #f5f7fa;
+    background-image: url(../assets/logo.svg);
+    background-repeat: no-repeat;
+    background-position: center; 
+    background-size: 50%;
+    background-blend-mode: color-burn;
+
     h2 {
       font-size: 24px;
       margin-bottom: 20px;
+      color: #2c3e50;
+      font-weight: 600;
     }
 
     ul {
       list-style-type: none;
       padding: 0;
+      margin: 0;
     }
 
     li {
-      background-color: #fff;
-      margin-bottom: 10px;
-      border-radius: 5px;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-      position: relative;
+      background-color: #f1f8fa;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      box-shadow: 0 3px 4px rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s, box-shadow 0.2s;
+      opacity: 0.9;
+      &:hover{
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        background-color: #d1d9e1;
+        border-width: 0.5px;
+        border-style: solid;
+      }
 
       .bet-item {
-        overflow: auto;
         display: flex;
+        padding: 20px;
+        align-items: center;
         justify-content: space-between;
-        padding: 15px;
+        gap: 15px;
 
-        p {
-          font-size: 18px;
+        p {          
+          font-size: 16px;
+          margin: 2px;
+          color: #34495e;
+
+          &:nth-of-type(1) { 
+            flex: 2;
+            font-weight: 500;
+          }
+
+          &:nth-of-type(2) { 
+            flex: 0 0 80px;
+            text-align: right;
+            font-weight: 600;
+            color: #2c3e50;
+          }
+
+          &:nth-of-type(3) { 
+            flex: 0 0 120px;
+            text-align: right;
+            color: #7f8c8d;
+            white-space: nowrap;
+          }
+
+          &:nth-of-type(4) { 
+            flex: 0 0 100px;
+            text-align: right;
+            font-weight: 600;
+            
+            &:contains("+200") {
+              color: #27ae60;
+            }
+            
+            &:contains("-200") {
+              color: #c0392b;
+            }
+          }
         }
 
         span {
@@ -81,40 +166,66 @@
           &.pastdue {
             background-color: red;
           }
-          background-color: #3498db;
+          width: 11px;
+          height: 11px;
+          border-radius: 45%;
+          margin-right: 15px;
+          flex-shrink: 0;
+        }
+
+        .submit-proof-button{
+          flex: 0 0 90px;
+          margin-left: 15px;
+          padding: 8px 16px;
+          background-color: #415663;
           color: white;
-          padding: 5px 10px;
-          border-radius: 3px;
+          border: none;
+          border-radius: 6px;
+          font-size: 14px;
+          font-weight: 500;
+          cursor: pointer;
+          transition: background-color 0.2s, transform 0.2s;
+
+          &:hover{
+            background-color: #303e4f;
+            color: #fff;
+            transform: translateY(-1px);
+          }
+
+          &:active{
+            transform: translateY(1px);
+          }
+          
         }
       }
-
+  
       .add-bets-panel-button {
         display: flex;
         align-items: center;
         justify-content: center;
         background-color: #f0f0f0;
-        height: 60px; /* Adjusted for a balanced height */
-        color: #000; /* White text */
+        height: 60px; 
+        color: #000; 
         font-size: 18px;
         font-weight: bold;
         border: none;
-        border-radius: 8px; /* Rounded corners */
+        border-radius: 8px; 
         cursor: pointer;
         transition: background-color 0.3s, box-shadow 0.3s, transform 0.2s;
       
         &:hover {
-          background-color: #2f3437; /* Darker shade for hover */
-          color: #fff; /* White text */
+          background-color: #303e4f; 
+          color: #fff; 
           box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
       
         &:active {
-          transform: scale(0.98); /* Slightly shrink on click */
+          transform: scale(0.98); 
         }
       
         &:focus {
-          outline: none; /* Remove default outline */
-          box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.5); /* Custom focus effect */
+          outline: none; 
+          box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.5); 
         }
       }
     }
@@ -197,7 +308,7 @@
         border-radius: 5px;
         cursor: pointer;
         font-size: 18px;
-        width: 100%; /* Centered and full width */
+        width: 100%; 
         text-align: center;
         margin-top: 10px;
         transition: background-color 0.3s;

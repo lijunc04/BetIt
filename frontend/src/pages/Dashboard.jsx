@@ -4,6 +4,9 @@ import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import "../styles/Dashboard.scss";
 import { X } from 'lucide-react';
 import VerifyPopup from './VerifyPopUp';
+import { LogOut } from 'lucide-react';
+import { logout } from '../config/auth'
+import { useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
   const [bets, setBets] = useState([]);
@@ -26,7 +29,7 @@ const Dashboard = () => {
   const [verify, setVerify] = useState(false)
   const [taskName, setTaskName] = useState('')
   const [verificationIndex, setVerificationIndex] = useState(null)
-
+  const navigate = useNavigate()
   useEffect(() => {
     const auth = getAuth();
     onAuthStateChanged(auth, (currentUser) => {
@@ -312,11 +315,21 @@ const Dashboard = () => {
         <div className="sidebar">
           {user ? (
             <div className="profile">
+
               <img className="profile-icon" src={user.photoURL || "https://via.placeholder.com/50"} alt="Profile Icon" />
-              <h3>{user.displayName}</h3>
-              <p>Score: {score}</p>
-              <p>Balance: ${balance}</p>
-              
+              <div className='user-info'>
+                <h3>{user.displayName}</h3>
+                <p>Score: {score}</p>
+                <p>Balance: ${balance}</p>
+              </div>
+              <LogOut 
+                onClick={()=>{
+                  logout()
+                  navigate('/')
+                }}
+                className='log-out-button'
+                size={24}
+              />
             </div>
           ) : (
             <button onClick={handleGoogleSignIn}>Sign in with Google</button>
@@ -349,14 +362,18 @@ const Dashboard = () => {
                       {bet.status === 'todo'
                       ? (
                         <button
-                        onClick={e=>handleSubmitProof(e, index)}
+                          onClick={e=>handleSubmitProof(e, index)}
+                          className='submit-proof-button'
                         >
-                          Submit Proof
+                          Submit
                         </button>
                       ):(
-                        <div></div>
-                      )
-                      }
+                        
+                        bet.status === 'pastdue' 
+                        ?(<p>-200 score</p>)
+                        :(<p>+200 score</p>)
+                        
+                      )}
                     </div>
                   </li>
                 ))
