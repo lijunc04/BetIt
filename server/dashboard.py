@@ -3,7 +3,7 @@ from check_firebase_auth import check_firebase_auth
 from firebase_admin import firestore
 dashboardResponse = Blueprint('dashboard', __name__)
 
-def getAllInfo(uid):
+def getAllInfo(uid, name):
     db = firestore.client()
     doc_ref = db.collection('users').document(uid)
     doc = doc_ref.get()
@@ -13,7 +13,9 @@ def getAllInfo(uid):
             'balance': 0,
             'bets': [],
             'score': 0,
+            'name': name
         })    
+        return doc.to_dict()
     else:
         data = doc.to_dict()
         bets_refs = data.get('bets', [])
@@ -23,13 +25,13 @@ def getAllInfo(uid):
             if bet_doc.exists:
                 bets_data.append(bet_doc.to_dict())
         data['bets'] = bets_data
-    return data
+        return data
 
 @dashboardResponse.route("/dashboard", methods=['GET'])
 @check_firebase_auth
 def dashboard():
     user = request.user
-    user_info = getAllInfo(user['uid'])
+    user_info = getAllInfo(user['uid'], user['name'])
     return jsonify({
         'uid': user['uid'],
         'info': user_info,

@@ -22,11 +22,11 @@ def check_firebase_auth(f):
             return jsonify({'error': 'Invalid token format'}), 401
         try:
             decoded_token = auth.verify_id_token(token)
-            
             request.user = {
                 'uid': decoded_token['uid'],
                 'email': decoded_token.get('email'),
-                'email_verified': decoded_token.get('email_verified', False)
+                'email_verified': decoded_token.get('email_verified', False),
+                'name': decoded_token['name']
             }
             
             return f(*args, **kwargs)
