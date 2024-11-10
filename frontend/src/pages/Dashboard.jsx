@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { signInWithGoogle } from '../config/auth';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';  
 import "../styles/Dashboard.scss";
+import { X } from 'lucide-react';
 
 const Dashboard = () => {
   const [bets, setBets] = useState([]);
@@ -29,6 +30,7 @@ const Dashboard = () => {
   }, []);
 
   const refresh_data = async () => {
+    setLoading(true)
     if (user){
       await user.getIdToken().then(token=>
         fetch('http://127.0.0.1:5000/dashboard', {
@@ -40,9 +42,11 @@ const Dashboard = () => {
         }).then(out=>out.json()).then(data=>setData(data.info))
       )
     }
+    setLoading(false)
   }
 
   const invalidateBet = async (index) => {
+
     if (user){
       await user.getIdToken().then(token=>
         fetch('http://127.0.0.1:5000/invalidatebet', {
@@ -52,17 +56,24 @@ const Dashboard = () => {
               'Content-Type': 'application/json',
           },
           body:JSON.stringify({
-            'bet_index': betIndices[index],            
+            'bet_index': index,            
           })
         })
       )
+
+    setLoading(true)
+
+      await refresh_data()
+    setLoading(false)
+
     }
   }
   // fetches all data: score, balance, bets
   useEffect(()=>{
+    setLoading(true)
     if (user){
       try{
-        user.getIdToken().then(token=>
+         user.getIdToken().then(token=>
           fetch('http://127.0.0.1:5000/dashboard', {
             method: 'GET',
             headers: {
@@ -75,6 +86,7 @@ const Dashboard = () => {
       }catch (error) {
         console.error('Error refreshing data:', error);
       }
+      console.log('finish loading')
     }
   },[user])  
 
@@ -91,7 +103,7 @@ const Dashboard = () => {
           await invalidateBet(i)
         }
       })
-      const order = ['todo', 'pastdue', 'done'];
+      const order = ['todo',  'done','pastdue',];
       const betsWithIndex = bets_unsorted.map((bet, index) => ({ bet, index }));
       
       betsWithIndex.sort((a, b) => {
@@ -102,8 +114,8 @@ const Dashboard = () => {
       setBetIndices(betsWithIndex.map(item => item.index))
       
       setBets(sortedBets);
-    }
-    setLoading(false);
+      setLoading(false)
+  }
   },[data])
 
 
@@ -151,9 +163,7 @@ const Dashboard = () => {
           // Add time and validate result
           const newTimestamp = dueTime.getTime() + millisecondsToAdd;
           dueTime = new Date(newTimestamp);
-          console.log(money)
           const moneyVal = parseFloat(money.replace('$', ''))
-          console.log(moneyVal)
           const token = await user.getIdToken()
           const res = await fetch('http://127.0.0.1:5000/bet', {
               method: 'POST',
@@ -176,6 +186,7 @@ const Dashboard = () => {
           setBetTime('')
           setMoney('')
           await refresh_data();
+          setExtendNewBet(false)
         }catch{
           console.log('error')
         }
@@ -185,7 +196,6 @@ const Dashboard = () => {
 
   const handleSubmitProof = async (e, index)=>{
     if(user){
-
       await user.getIdToken().then(token=>
         fetch('http://127.0.0.1:5000/completebet', {
           method: 'PUT',
@@ -207,10 +217,6 @@ const Dashboard = () => {
     const currentTime = new Date();
     const dueTime = new Date(time);
     const timeLeftMillis = dueTime.getTime() - currentTime.getTime();
-  
-    if (timeLeftMillis <= 0) {
-      return "Time is up!";
-    }
   
     const seconds = Math.floor(timeLeftMillis / 1000);
     const minutes = Math.floor(seconds / 60);
@@ -241,8 +247,6 @@ const Dashboard = () => {
     const currentTime = new Date();
     const pastTime = new Date(time);
     const timePassedMillis = currentTime.getTime() - pastTime.getTime();
-    console.log(currentTime)
-    console.log(pastTime)
     if (timePassedMillis <= 0) {
       return "Just now";
     }
@@ -296,7 +300,7 @@ const Dashboard = () => {
           ) : (
             <ul>
               {bets.length===0  ? (
-                <li>No current bets</li>
+                <></>
               ) : (
                 bets.map((bet, index) => (
                   <li key={index}>
@@ -327,59 +331,76 @@ const Dashboard = () => {
                   </li>
                 ))
               )}
+              <li>
+                <div
+                className='add-bets-panel-button'
+                onClick={()=>setExtendNewBet(true)}
+                >
+                  {bets.length === 0? 'Click here to start!' : 'Click to add more bets!'}
+                </div>
+              </li>
             </ul>
           )}
         </div>
-
-        <div className="create-bet">
-          <h2>Create a New Bet</h2>
-          <input
-            type="text"
-            value={newBet}
-            onChange={(e) => setNewBet(e.target.value)}
-            placeholder="Enter your bet"
-          />
-          <div className='bet-time-select'>
-            <input
-              type="text"
-              value={betTime}
-              onChange={(e) => {
-                let newVal = e.target.value.replace(/[^\d]/g, ""); 
-                e.target.value = newVal;
-                setBetTime(e.target.value)
-              }}
-              placeholder="Time limit"
-            />
-            <select 
-              id="timeUnitDropdown" 
-              value={timeUnit} 
-              onChange={e=>setTimeUnit(e.target.value)}
+        {extendNewBet && (
+          <div className={`create-bet ${extendNewBet ? 'active' : ''}`}>
+            <button 
+              onClick={() => setExtendNewBet(false)}
+              className="close-button"
+              aria-label="Close"
             >
-                <option value="hrs">Hrs</option>
-                <option value="days">Days</option>
-                <option value="mins">Minutes</option>
-            </select>
+              <X size={24} />
+            </button>
+            <h2>Create a New Bet</h2>
+            <div className="create-bet-form">
+              <input
+                type="text"
+                value={newBet}
+                onChange={(e) => setNewBet(e.target.value)}
+                placeholder="Enter your bet"
+              />
+              <div className='bet-time-select'>
+                <input
+                  type="text"
+                  value={betTime}
+                  onChange={(e) => {
+                    let newVal = e.target.value.replace(/[^\d]/g, ""); 
+                    e.target.value = newVal;
+                    setBetTime(e.target.value)
+                  }}
+                  placeholder="Time limit"
+                />
+                <select 
+                  id="timeUnitDropdown" 
+                  value={timeUnit} 
+                  onChange={e => setTimeUnit(e.target.value)}
+                >
+                  <option value="hrs">Hrs</option>
+                  <option value="days">Days</option>
+                  <option value="mins">Minutes</option>
+                </select>
+              </div>
+              <input            
+                type="text"
+                value={money}
+                onChange={(e) => {
+                  let newVal = e.target.value.replace(/[^0-9.]/g, ""); 
+                  let parts = newVal.split('.');
+                  if (parts.length > 1) {
+                    parts[1] = parts[1].slice(0, 2);
+                    newVal = parts[0] + '.' + parts[1];
+                  } 
+                  if(newVal.length > 0) {
+                    e.target.value = '$' + newVal;
+                  }
+                  setMoney(e.target.value)
+                }}
+                placeholder="Enter your wager"
+              />
+              <button onClick={handleCreateBet}>Create Bet</button>
+            </div>
           </div>
-          <input            
-            type="text"
-            value={money}
-            onChange={(e) => {
-              let newVal = e.target.value.replace(/[^0-9.]/g, ""); 
-              let parts = newVal.split('.');
-              if (parts.length > 1) {
-                  parts[1] = parts[1].slice(0, 2);
-                  newVal = parts[0] + '.' + parts[1];
-              } 
-              if(newVal.length > 0){
-                e.target.value = '$' + newVal;
-              }
-              setMoney(e.target.value)
-            }}
-            placeholder="Enter your wager"
-          />
-
-          <button onClick={handleCreateBet}>Create Bet</button>
-        </div>
+        )}
       </div>
     </div>
   );

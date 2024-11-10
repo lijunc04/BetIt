@@ -1,76 +1,84 @@
 .dashboard {
-    display: flex;
-    min-height: 100vh;
-    background-color: #f7f7f7;
-    font-family: Arial, sans-serif;
-  }
-  
-  .dashboard-container {
+  display: flex;
+  min-height: 100vh;
+  height: 100vh;
+  background-color: #f7f7f7;
+  font-family: Arial, sans-serif;
+  position: relative;
+  overflow-x: hidden;  // Prevent horizontal scrollbar during animation
+
+  &-container {
     display: flex;
     width: 100%;
+    position: relative;  // For proper positioning of create-bet panel
   }
-  
+
   .sidebar {
     width: 250px;
     background-color: #2c3e50;
     padding: 20px;
     color: white;
     text-align: center;
-  
+    flex-shrink: 0;
+    overflow: hidden;
+    
     .profile {
       margin-bottom: 40px;
-    }
-  
-    .profile-icon {
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      margin-bottom: 10px;
-    }
-  
-    h3 {
-      margin-top: 10px;
-      font-size: 18px;
+
+      &-icon {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        margin-bottom: 10px;
+      }
+
+      h3 {
+        margin-top: 10px;
+        font-size: 18px;
+      }
     }
   }
-  
+
   .bets {
     flex: 1;
     padding: 20px;
-    
+    overflow: auto;
+    height: 100%;
     h2 {
       font-size: 24px;
       margin-bottom: 20px;
     }
-  
+
     ul {
       list-style-type: none;
       padding: 0;
     }
-  
+
     li {
       background-color: #fff;
-      padding: 15px;
       margin-bottom: 10px;
       border-radius: 5px;
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  
+      position: relative;
+
       .bet-item {
+        overflow: auto;
         display: flex;
         justify-content: space-between;
-  
+        padding: 15px;
+
         p {
           font-size: 18px;
         }
-  
+
         span {
-          &.todo{
+          &.todo {
             background-color: #3498db;
           }
-          &.done{
+          &.done {
             background-color: greenyellow;
           }
-          &.pastdue{
+          &.pastdue {
             background-color: red;
           }
           background-color: #3498db;
@@ -79,40 +87,124 @@
           border-radius: 3px;
         }
       }
+
+      .add-bets-panel-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #f0f0f0;
+        height: 60px; /* Adjusted for a balanced height */
+        color: #000; /* White text */
+        font-size: 18px;
+        font-weight: bold;
+        border: none;
+        border-radius: 8px; /* Rounded corners */
+        cursor: pointer;
+        transition: background-color 0.3s, box-shadow 0.3s, transform 0.2s;
+      
+        &:hover {
+          background-color: #2f3437; /* Darker shade for hover */
+          color: #fff; /* White text */
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+      
+        &:active {
+          transform: scale(0.98); /* Slightly shrink on click */
+        }
+      
+        &:focus {
+          outline: none; /* Remove default outline */
+          box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.5); /* Custom focus effect */
+        }
+      }
     }
   }
-  
+
   .create-bet {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 400px;
+    height: 100vh;
     padding: 20px;
     background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  
-    h2 {
-      font-size: 22px;
-      margin-bottom: 10px;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+    transform: translateX(1%);
+    will-change: transform;
+    transition: transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+    z-index: 1000;
+    overflow-y: auto;
+
+    &.active {
+      transform: translateX(0);
     }
-  
-    input {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 20px;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      font-size: 16px;
-    }
-  
-    button {
-      background-color: #3498db;
-      color: white;
-      padding: 10px 20px;
+
+    .close-button {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: none;
       border: none;
-      border-radius: 5px;
+      color: #6b7280;
       cursor: pointer;
-      font-size: 16px;
-  
+      padding: 0.5rem;
+      transition: color 0.2s ease;
+
       &:hover {
-        background-color: #2980b9;
+        color: #374151;
+        background-color: white;
+      }
+    }
+
+    .create-bet-form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+  
+      input, select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 16px;
+        outline: none;
+        box-sizing: border-box;
+  
+        &:focus {
+          border-color: #3498db;
+          box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+        }
+      }
+  
+      .bet-time-select {
+        display: flex;
+        gap: 10px;
+  
+        input {
+          flex: 2;
+        }
+  
+        select {
+          flex: 1;
+        }
+      }
+  
+      button {
+        background-color: #3498db;
+        color: white;
+        padding: 12px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 18px;
+        width: 100%; /* Centered and full width */
+        text-align: center;
+        margin-top: 10px;
+        transition: background-color 0.3s;
+  
+        &:hover {
+          background-color: #2980b9;
+        }
       }
     }
   }
@@ -120,7 +212,7 @@
   .bet-time-select {
     display: flex;
     gap: 10px;
-  
+
     input {
       padding: 8px;
       font-size: 14px;
@@ -128,12 +220,12 @@
       border-radius: 4px;
       outline: none;
       transition: border-color 0.3s;
-  
+
       &:focus {
         border-color: #007BFF;
       }
     }
-  
+
     select {
       padding: 8px;
       font-size: 14px;
@@ -143,13 +235,14 @@
       outline: none;
       transition: border-color 0.3s;
       height: 100%;
-  
+
       &:focus {
         border-color: #007BFF;
       }
-  
+
       option {
         font-size: 14px;
       }
     }
   }
+}
