@@ -1,17 +1,34 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import '../styles/Navbar.scss';
 import { useNavigate } from 'react-router-dom';
 import { signInWithGoogle } from '../config/auth';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';  
+
+
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const [user, setUser] = useState(null)
+
+
+  useEffect(() => {
+    const auth = getAuth();
+    onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser); 
+    });
+  }, []);
+
   const handleGoogleSignIn = async () => {
-    try {
-      const user = await signInWithGoogle();
-      console.log("User signed in", user);
-      navigate('/dashboard');
-    } catch (error) {
-      console.error("Sign in failed", error);
+    if(!user){
+      try {
+        const user = await signInWithGoogle();
+        console.log("User signed in", user);
+        navigate('/dashboard');
+      } catch (error) {
+        console.error("Sign in failed", error);
+      }
+    }else{
+      navigate('/dashboard')
     }
   };
 
@@ -25,7 +42,12 @@ const Navbar = () => {
           <li><a href="/leaderboards">Leaderboards</a></li>
         </ul>
         <button className="navbar__button" onClick={handleGoogleSignIn}>
-          Sign In with Google
+          {
+            !user ?
+            "Sign in with Google"
+            :
+            "Dashboard"
+          }
         </button>
       </div>
     </nav>
