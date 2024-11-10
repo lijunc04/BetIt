@@ -30,6 +30,7 @@ const Dashboard = () => {
   const [taskName, setTaskName] = useState('')
   const [verificationIndex, setVerificationIndex] = useState(null)
   const navigate = useNavigate()
+
   useEffect(() => {
     const auth = getAuth();
     onAuthStateChanged(auth, (currentUser) => {
@@ -95,6 +96,8 @@ const Dashboard = () => {
         console.error('Error refreshing data:', error);
       }
       console.log('finish loading')
+      setLoading(false)
+
     }
   },[user])  
 
@@ -200,7 +203,6 @@ const Dashboard = () => {
         }
     }
   }
-
 
   const completeProof = async (index)=>{
     if(user){
@@ -314,23 +316,38 @@ const Dashboard = () => {
         }
         <div className="sidebar">
           {user ? (
-            <div className="profile">
-
-              <img className="profile-icon" src={user.photoURL || "https://via.placeholder.com/50"} alt="Profile Icon" />
-              <div className='user-info'>
-                <h3>{user.displayName}</h3>
-                <p>Score: {score}</p>
-                <p>Balance: ${balance}</p>
+            <div>
+              <div className='navigate-items'>
+                <ul>
+                  <li onClick={()=>navigate('/')}>
+                    <p>Home</p>
+                  </li>
+                  <li onClick={()=>navigate('/leaderboard')}>
+                    <p>Leaderboard</p>
+                  </li>
+                  <li onClick={()=>navigate('/about')}>
+                    <p>About</p>
+                  </li>
+                </ul>
               </div>
-              <LogOut 
-                onClick={()=>{
-                  logout()
-                  navigate('/')
-                }}
-                className='log-out-button'
-                size={24}
-              />
+              <div className="profile">
+                <img className="profile-icon" src={user.photoURL || "https://via.placeholder.com/50"} alt="Profile Icon" />
+                <div className='user-info'>
+                  <h3>{user.displayName}</h3>
+                  <p>Score: {score}</p>
+                  <p>Balance: ${balance}</p>
+                </div>
+                <LogOut 
+                  onClick={()=>{
+                    logout()
+                    navigate('/')
+                  }}
+                  className='log-out-button'
+                  size={24}
+                />
+              </div>
             </div>
+
           ) : (
             <button onClick={handleGoogleSignIn}>Sign in with Google</button>
           )}

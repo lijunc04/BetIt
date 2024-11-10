@@ -27,9 +27,41 @@
     flex-direction: column;
     justify-content: flex-end;
 
+    .navigate-items {
+      width: 100%;
+      
+      ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+  
+        li {
+
+
+          cursor: pointer;
+          transition: background 0.3s, color 0.3s;
+          &:hover {
+            background-color: #34495e;
+            color: #ecf0f1;
+          }
+  
+          &:active {
+            transform: scale(0.98);
+          }
+          p{
+            margin-left: 30px;
+            padding: 10px 0;
+            font-size: 18px;
+            text-align: left;
+            margin-top: 0;
+            margin-bottom: 0;
+          }
+        }
+      }
+    }
     
     .profile {
-      margin-top: 30px;
+      margin-top: 20px;
       margin-bottom: 30px;
       display: flex;
       align-items: center;
