@@ -3,6 +3,7 @@ import { signInWithGoogle } from '../config/auth';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';  
 import "../styles/Dashboard.scss";
 import { X } from 'lucide-react';
+import VerifyPopup from './VerifyPopUp';
 
 const Dashboard = () => {
   const [bets, setBets] = useState([]);
@@ -21,6 +22,10 @@ const Dashboard = () => {
   const [balance, setBalance] = useState(0);
 
   const [extendNewBet, setExtendNewBet] = useState(false);
+
+  const [verify, setVerify] = useState(false)
+  const [taskName, setTaskName] = useState('')
+  const [verificationIndex, setVerificationIndex] = useState(null)
 
   useEffect(() => {
     const auth = getAuth();
@@ -194,7 +199,7 @@ const Dashboard = () => {
   }
 
 
-  const handleSubmitProof = async (e, index)=>{
+  const completeProof = async (index)=>{
     if(user){
       await user.getIdToken().then(token=>
         fetch('http://127.0.0.1:5000/completebet', {
@@ -207,10 +212,13 @@ const Dashboard = () => {
             'bet_index': betIndices[index],            
           })
         }).then(res=>console.log(res.json())))
-      console.log('a')
       await refresh_data()
-      console.log('b')
     }
+  }
+  const handleSubmitProof = async (_, index)=>{
+    setVerify(true)
+    setTaskName(bets[index].bet)
+    setVerificationIndex(index)
   }
 
   const getRemainTime = (time) => {
@@ -279,6 +287,28 @@ const Dashboard = () => {
   return (
     <div className="dashboard">
       <div className="dashboard-container">
+        {
+          verify ? 
+          (
+            <VerifyPopup 
+              taskName={taskName} 
+              onClose={()=>{
+                setVerify(false)
+                setTaskName('')
+                setVerificationIndex(null)
+              }}
+              onPositiveVerification={
+                () =>{
+                  completeProof(verificationIndex)
+                }
+              }
+            />
+          )
+          :
+          (
+            <></>
+          )
+        }
         <div className="sidebar">
           {user ? (
             <div className="profile">

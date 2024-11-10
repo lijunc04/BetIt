@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import '../styles/VerifyPopup.scss';
 
-const VerifyPopup = ({ taskName, onClose }) => {
+const VerifyPopup = ({ taskName, onClose, onPositiveVerification }) => {
   const [image, setImage] = useState(null);
   const [result, setResult] = useState('');
   const [imagePreview, setImagePreview] = useState('');
@@ -30,8 +30,16 @@ const VerifyPopup = ({ taskName, onClose }) => {
         body: formData,
       });
       const data = await response.json();
-      console.log(data.result)
-      setResult( await data.result === 'True' ? "Verification Successful!" : "Verification Failed:/");
+      const verificationResult = await data.result
+      if (verificationResult  === 'True'){
+        console.log(taskName)
+        setResult("Verification Successful!")
+        onPositiveVerification()
+        onClose()
+      }else{
+        setResult("Verification Failed:/")
+      }
+      //setResult( await data.result === 'True' ? "Verification Successful!" : "Verification Failed:/");
     } catch (error) {
       console.error('Error:', error);
       setResult("An error occurred while verifying the image.");
