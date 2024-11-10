@@ -12,11 +12,10 @@ def getAllInfo(uid):
             'uid': uid,
             'balance': 0,
             'bets': [],
-            'score': 0
+            'score': 0,
         })    
     else:
         data = doc.to_dict()
-        # Parse bets as JSON
         bets_refs = data.get('bets', [])
         bets_data = []
         for bet_ref in bets_refs:
