@@ -1,38 +1,53 @@
-/* App.css or Navbar.css */
 .navbar {
-    width: 50%;
-    margin: 0 auto;
-    background-color: rgba(0, 0, 0, 0.5); /* Black with 50% transparency */
-    z-index: 1000; /* Makes sure it's on top of other elements */
-    border-radius: 100px;
-    margin-top: 1rem;
-  }
-  
-  .navbar-content {
+  display: flex;
+  justify-content: center; 
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: #ffffff;
+  z-index: 100;
+
+  &__content {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
+    width: 100%;
+    max-width: 1200px;
   }
-  
-  .navbar h2 {
-    color: #fff;  /* White color for text */
+
+  &__logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
   }
-  
-  .navbar ul {
+
+  &__links {
     display: flex;
     list-style: none;
-    align-items: center;
-    justify-content: center;
+    gap: 1.5rem;
+
+    li {
+      a {
+        color: #333;
+        text-decoration: none;
+        font-weight: 500;
+        &:hover {
+          color: #2D5987;
+        }
+      }
+    }
   }
-  
-  .navbar ul li {
-    margin: 0 15px;
+
+  &__button {
+    padding: 0.5rem 1.25rem;
+    background-color: #2763a4;
     color: #fff;
+    border: none;
+    border-radius: 4px;
     cursor: pointer;
-    justify-content: center;
+    font-weight: 500;
+
+    &:hover {
+      background-color: #2D5987;
+    }
   }
-  
-  .navbar ul li:hover {
-    color: #ff6347; 
-  }
-  
+}
