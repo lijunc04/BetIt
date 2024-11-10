@@ -322,7 +322,7 @@ const Dashboard = () => {
                   <li onClick={()=>navigate('/')}>
                     <p>Home</p>
                   </li>
-                  <li onClick={()=>navigate('/leaderboard')}>
+                  <li onClick={()=>navigate('/leaderboards')}>
                     <p>Leaderboard</p>
                   </li>
                   <li onClick={()=>navigate('/about')}>
@@ -387,8 +387,8 @@ const Dashboard = () => {
                       ):(
                         
                         bet.status === 'pastdue' 
-                        ?(<p>-200 score</p>)
-                        :(<p>+200 score</p>)
+                        ?(<p>-100 score</p>)
+                        :(<p>+100 score</p>)
                         
                       )}
                     </div>
