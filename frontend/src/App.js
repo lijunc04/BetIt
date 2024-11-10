@@ -4,6 +4,7 @@ import LandingPage from './pages/LandingPage';
 import Dashboard from './pages/Dashboard';
 import VerifyPopup from './pages/VerifyPopUp';
 import Leaderboards from './pages/Leaderboards';
+import AboutPage from './pages/About';
 //import Profile from './pages/Profile';
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path='/verify' element = {<VerifyPopup taskName="wear glasses"/>}/>
         <Route path='/leaderboards' element = {<Leaderboards/>}/> 
+        <Route path='/about' element={<AboutPage />}/>
         {/*<Route path="/profile" element={<Profile />} />*/}
       </Routes>
     </Router>
