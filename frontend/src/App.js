@@ -10,7 +10,7 @@ function App() {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/dashboard" element={<Dashboard />} />
-        <Route path='/verify' element = {<VerifyPopup taskName="eat a bag of chips"/>}/>
+        <Route path='/verify' element = {<VerifyPopup taskName="wear glasses"/>}/>
         {/*<Route path="/profile" element={<Profile />} />*/}
       </Routes>
     </Router>

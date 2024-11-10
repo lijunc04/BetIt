@@ -59,6 +59,7 @@ def getImageVerification():
         result = json.dumps(response.choices[0].message.content)
         print('here5')
         response_dict = {"result": json.loads(result)}
+        print(response_dict)
         return json.dumps(response_dict, indent=4)
 
     
