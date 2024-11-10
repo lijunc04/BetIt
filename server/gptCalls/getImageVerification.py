@@ -10,7 +10,7 @@ load_dotenv()
 
 rekognition_client = boto3.client('rekognition')
 client = OpenAI()
-client.api_key = os.getenv("OPEN_API_KEY")
+client.api_key = os.getenv("OPENAI_API_KEY")
 
 
 verify = Blueprint('verify_line', __name__) 
@@ -29,6 +29,7 @@ def getImageVerification():
 
     image_bytes = image_file.read()
     print('here2')
+    # AWS rekoginition
     rekognition_response = rekognition_client.detect_labels(
         Image={'Bytes': image_bytes},
         MaxLabels=10
@@ -55,12 +56,11 @@ def getImageVerification():
                 max_tokens=10
         )
         print('here44')
-        # Extract the result from the response
         result = json.dumps(response.choices[0].message.content)
         print('here5')
         response_dict = {"result": json.loads(result)}
         return json.dumps(response_dict, indent=4)
 
     
-    except Exception as e:  # General errors
+    except Exception as e:  
         return jsonify({"error": f"An unexpected error occurred: {str(e)}"}), 500

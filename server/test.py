@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 
 import json
 load_dotenv()
-client.api_key = os.getenv("OPEN_API_KEY")
+client.api_key = os.getenv("OPENAI_API_KEY")
 print(client.api_key)
 
 completion = client.chat.completions.create(
