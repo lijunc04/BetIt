@@ -9,7 +9,6 @@ const LandingPage = () => {
     const handleGoogleSignIn = async () => {
         try {
           const user = await signInWithGoogle();
-          
           console.log("User signed in", user);
           navigate('/dashboard');
         } catch (error) {

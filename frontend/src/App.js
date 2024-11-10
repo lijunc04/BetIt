@@ -2,6 +2,7 @@ import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LandingPage from './pages/LandingPage';
 import Dashboard from './pages/Dashboard';
+import VerifyPopup from './pages/VerifyPopUp';
 //import Profile from './pages/Profile';
 function App() {
   return (
@@ -9,6 +10,7 @@ function App() {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path='/verify' element = {<VerifyPopup taskName="eat a bag of chips"/>}/>
         {/*<Route path="/profile" element={<Profile />} />*/}
       </Routes>
     </Router>
